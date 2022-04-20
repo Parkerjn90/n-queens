@@ -81,10 +81,14 @@
     hasRowConflictAt: function (rowIndex) {
       var rows = this.rows();
       var currentRow = rows[rowIndex];
+      var pieceCounter = 0;
       for (var piece of currentRow) {
         if (piece === 1) {
-          return true;
+          pieceCounter++;
         }
+      }
+      if (pieceCounter > 1) {
+        return true;
       }
       return false; // fixme
     },
@@ -94,9 +98,9 @@
       //new rows variable set to this.rows()
       var rows = this.rows();
       //iterate over each row in rows
-      for (var row of rows) {
+      for (let i = 0; i < rows.length; i++) {
         //invoke hasRowConflictAt on each row
-        if (hasRowConflictAt(i)) {
+        if (this.hasRowConflictAt(i)) {
           //if hasRowConflictAt
           //return true
           return true;
@@ -112,12 +116,36 @@
     // --------------------------------------------------------------
     //
     // test if a specific column on this board contains a conflict
-    hasColConflictAt: function (colIndex) {
+    hasColConflictAt: function (colIndex) { // base function
+      // get rows
+      var rows = this.rows();
+      // for EACH row check at current colIndex
+      var pieceCounter = 0;
+      for (var row of rows) {
+        // if conflict (=== 1)
+        if (row[colIndex] === 1) {
+          // return true
+          pieceCounter++;
+        }
+      }
+      if (pieceCounter > 1) {
+        return true;
+      }
       return false; // fixme
     },
 
     // test if any columns on this board contain conflicts
-    hasAnyColConflicts: function () {
+    hasAnyColConflicts: function () { // board function
+      // get rows
+      var rows = this.rows();
+      // get rows.length
+      var size = rows.length;
+      for (let i = 0; i < size; i++) {
+        // iterate over rows first,
+        if (this.hasColConflictAt(i)) {
+          return true;
+        }
+      }
       return false; // fixme
     },
 
