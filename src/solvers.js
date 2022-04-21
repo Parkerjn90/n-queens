@@ -69,18 +69,47 @@ window.findNRooksSolution = function (n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function (n) {
-  var solutionCount = undefined; //fixme
-  // create new board
+  var solutionCount = 0; //fixme
+  if (n === 1) {
+    solutionCount = 1;
+    return solutionCount;
+  }
 
-  // for as many spaces per row(n),
-    // create row array (length = n)
-    // create column array (length = n)
-    // in new board toggle (0, i)
-    // remove i from column array
-    // remove row from row array
-    // for EACH row remaining
-      // check each column remaining
 
+  var updateBoard = function (row, col) {
+    clearBoard.togglePiece(row, col);
+    piecesOn++;
+
+    rowsLeft.splice(rowsLeft.indexOf(row), 1);
+    colsLeft.splice(colsLeft.indexOf(col), 1);
+    if (piecesOn === n) {
+      //add cordinates array to solution cordinates
+      solutionCount++;
+      return;
+    }
+    if (!rowsLeft.length || !colsLeft.length) {
+      return;
+    }
+    _.each(rowsLeft, function(remainingRow) {
+      _.each(colsLeft, function(remainingCols) {
+        updateBoard(remainingRow, remainingCols);
+      });
+    });
+  };
+  var solutionCoordinates = [];
+
+  for (var y = 0; y < n; y++) {
+    for (var x = 0; x < n; x++) {
+      //if y, x cordinates were part of previous solution
+        //continue
+      var clearBoard = new Board ({n: n});
+      var piecesOn = 0;
+      var rowsLeft = _.range(n);
+      var colsLeft = _.range(n);
+      // invoke function on (y, x)
+      updateBoard(y, x);
+    }
+  }
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
