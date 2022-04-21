@@ -232,10 +232,7 @@
 
       for (let row = 0; row < size; row++) {
         if (row === 0) {
-          console.log('----------' + row + '----------');
           for (let col = size; col > 0; col--) {
-            console.log('~~~~~~~~~~' + col + '~~~~~~~~~~~~');
-            console.log(this.hasMinorDiagonalConflictAt(col));
             if (this.hasMinorDiagonalConflictAt(col)) {
               return true;
             }
